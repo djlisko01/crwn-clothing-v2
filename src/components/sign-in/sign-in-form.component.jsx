@@ -1,8 +1,9 @@
 import "./sign-in.styles.scss";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
+import { UserContext } from "../../context/user.context";
 
 import {
   signInWithGooglePopup,
@@ -16,18 +17,19 @@ const defaultFormValues = {
   password: "",
   confirmPassword: "",
 };
+
 const SignInForm = () => {
   const [formValues, setFormValues] = useState(defaultFormValues);
   const { email, password } = formValues;
-
-  // const resetFormFields = () => {
-  //   setFormValues(defaultFormValues);
-  // };
+  const resetFormFields = () => {
+    setFormValues(defaultFormValues);
+  };
 
   const logGoogleUser = async () => {
     const { user } = await signInWithGooglePopup();
     createUserDocumentFromAuth(user);
   };
+
   const handleOnChange = (event) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
@@ -35,11 +37,10 @@ const SignInForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("SIGN IN ATTEMPT");
 
     try {
-      const response = await userEmailSignIn(email, password);
-      console.log("DONE", response);
+      await userEmailSignIn(email, password);
+      resetFormFields();
     } catch (error) {
       switch (error.code) {
         case "auth/invalid-login-credentials":
