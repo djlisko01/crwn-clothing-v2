@@ -4,6 +4,9 @@ import { Outlet, Link } from "react-router-dom";
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 import { UserContext } from "../../context/user.context";
 import { userAuthSignOut } from "../../utils/firebase/firebase.utils";
+import CartIcon from "../../components/cart-icon/cart-icon.component";
+import CartDropdown from "../../components/dropdown/dropdown-component";
+import { CartContext } from "../../context/cart.context";
 
 import "./navigation.styles.scss";
 
@@ -14,6 +17,8 @@ const Navigation = () => {
     await userAuthSignOut();
     console.log("current user", currentUser);
   };
+
+  const { isVisible } = useContext(CartContext);
 
   return (
     <Fragment>
@@ -34,7 +39,9 @@ const Navigation = () => {
               SIGN IN
             </Link>
           )}
+          <CartIcon />
         </div>
+        {isVisible && <CartDropdown />}
       </div>
       <Outlet />
     </Fragment>
