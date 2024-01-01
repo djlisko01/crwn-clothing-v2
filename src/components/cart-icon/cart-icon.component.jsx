@@ -3,14 +3,15 @@ import { CartContext } from "../../context/cart.context";
 import { useContext } from "react";
 import "./cart-icon.styles.scss";
 const CartIcon = () => {
-  const { setIsVisible, isVisible } = useContext(CartContext);
+  const { setIsVisible, isVisible, cartCount } = useContext(CartContext);
+
   return (
     <div
       className="cart-icon-container"
       onClick={() => setIsVisible(!isVisible)}
     >
       <ShoppingIcon className="shopping-icon" />
-      <span className="item-count">0</span>
+      <span className="item-count">{cartCount}</span>
     </div>
   );
 };
